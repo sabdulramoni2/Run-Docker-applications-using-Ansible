@@ -42,15 +42,28 @@
     - name: Reconnect to server session
       meta: reset_connection
 
-- name: Test docker pull
+- name: Start docker containers
   hosts: docker_server
-  collections:
-    - community.docker
+  vars_files:
+        - project-vars 
   tasks:
-    - name: pull redis
-      docker_image: 
-          name: redis
-          source: pull
+    - name: Copy docker compose 
+      copy:
+        src: /root/docker-compose-full.yaml
+        dest: /home/ec2-user/docker-compose.yaml
+            
+    - name: Docker login
+      docker_login:
+          username: ashiwaju
+          password: "{{docker_password}}"
+
+    - name: Start containers from compose
+      community.docker.docker_compose_v2:
+        project_src: /home/ec2-user
+
+      
+    
+
 
     
 
