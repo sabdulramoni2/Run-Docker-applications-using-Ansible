@@ -31,7 +31,7 @@
 
 
 - name: Add ec2-user to docker group
-  hosts: all
+  hosts: docker_server
   become: yes
   tasks: 
     - name: Add ec2-user to docker group
