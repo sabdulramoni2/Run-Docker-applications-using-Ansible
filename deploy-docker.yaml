@@ -41,8 +41,11 @@
         append: yes
     - name: Reconnect to server session
       meta: reset_connection
-- name:
+
+- name: Test docker pull
   hosts: docker_server
+  collections:
+    - community.docker
   tasks:
     - name: pull redis
       docker_image: 
