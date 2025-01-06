@@ -151,6 +151,15 @@ resource "aws_instance" "myapp-server" {
 
 
 
+  provisioner "local-exec" {
+    working_dir = "/root"
+    command = "ansible-playbook --inventory ${self.public_ip}, --private-key ${var.ssh_key_provate}"
+  }
+    
+  }
+
+
+
 }
 
 
