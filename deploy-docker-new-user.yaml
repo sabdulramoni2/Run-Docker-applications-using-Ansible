@@ -1,0 +1,69 @@
+---
+- name: Install Docker
+  hosts: docker_server
+  become: yes
+  tasks:
+    - name: Install Docker
+      yum:
+        name: docker
+        update_cache: yes
+        state: present
+    - name: Start docker daemon
+      systemd:
+        name: docker
+        state: started
+- name: Create new Linux user
+  hosts: docker_server
+  become: yes
+  tasks: 
+    - name: Create new Linux user
+      user:
+        name: ashiwaju
+        groups: adm,docker
+
+- name: Install Docker-compose
+  hosts: docker_server
+  become: yes 
+  become_user: ashiwaju
+  tasks:
+    - name: Create docker-compose directory
+      file:
+        path: ~/.docker/cli-plugins
+        state: directory
+    - name: Get architecture of remote machine
+      shell: uname -m
+      register: remote_arch
+    - name: Install docker-compose
+      get_url:
+        url: "https://github.com/docker/compose/releases/latest/download/docker-compose-linux-{{remote_arch.stdout}}"
+        dest: ~/.docker/cli-plugins/docker-compose
+        mode: +x
+
+
+- name: Start docker containers
+  hosts: docker_server
+  become: yes 
+  become_user: ashiwaju
+  vars_files:
+        - project-vars 
+  tasks:
+    - name: Copy docker compose 
+      copy:
+        src: /root/docker-compose-full.yaml
+        dest: /home/ashiwaju/docker-compose.yaml
+            
+    - name: Docker login
+      docker_login:
+          username: ashiwaju
+          password: "{{docker_password}}"
+
+    - name: Start containers from compose
+      community.docker.docker_compose_v2:
+        project_src: /home/ashiwaju
+
+      
+    
+
+
+    
+
