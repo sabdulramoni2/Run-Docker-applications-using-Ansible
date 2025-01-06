@@ -20,6 +20,10 @@
       user:
         name: ashiwaju
         groups: adm,docker
+        append: yes
+    - name: Reconnect to server session
+      meta: reset_connection
+
 
 - name: Install Docker-compose
   hosts: docker_server
