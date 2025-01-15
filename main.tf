@@ -9,6 +9,7 @@ variable  my_ip {}
 variable  instance_type {}
 variable public_key_location {}
 variable image_name {}
+variable ssh_key_private {}
 
 resource "aws_vpc" "myapp-vpc" {
   cidr_block = var.vpc_cidr_blocks
@@ -153,13 +154,13 @@ resource "aws_instance" "myapp-server" {
 
   provisioner "local-exec" {
     working_dir = "/root"
-    command = "ansible-playbook --inventory ${self.public_ip}, --private-key ${var.ssh_key_provate}"
+    command = "ansible-playbook --inventory ${self.public_ip}, --private-key ${var.ssh_key_private}"
   }
     
   }
 
 
 
-}
+
 
 
