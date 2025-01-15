@@ -1,6 +1,6 @@
 ---
 - name: Install Docker
-  hosts: docker_server
+  hosts: all
   become: yes
   tasks:
     - name: Install Docker
@@ -13,7 +13,7 @@
         name: docker
         state: started
 - name: Create new Linux user
-  hosts: docker_server
+  hosts: all
   become: yes
   tasks: 
     - name: Create new Linux user
@@ -26,7 +26,7 @@
 
 
 - name: Install Docker-compose
-  hosts: docker_server
+  hosts: all
   become: yes 
   become_user: ashiwaju
   tasks:
@@ -45,7 +45,7 @@
 
 
 - name: Start docker containers
-  hosts: docker_server
+  hosts: all
   become: yes 
   become_user: ashiwaju
   vars_files:
