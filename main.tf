@@ -150,9 +150,13 @@ resource "aws_instance" "myapp-server" {
     Name: "${var.env_prefix}-server"
   }
 
+    
+  }
 
 
-  provisioner "local-exec" {
+  resource "null_resource" "configure_server" {
+
+    provisioner "local-exec" {
     working_dir = "/root"
     command = "ansible-playbook --inventory ${self.public_ip}, --private-key ${var.ssh_key_private} --user ec2-user docker-docker-new-user.yaml "
   }
