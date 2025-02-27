@@ -156,6 +156,10 @@ resource "aws_instance" "myapp-server" {
 
   resource "null_resource" "configure_server" {
 
+    triggers = {
+      trigger = aws_instance.myapp-server.public_ip
+    }
+
     provisioner "local-exec" {
     working_dir = "/root"
     command = "ansible-playbook --inventory ${aws_instance.myapp-server.public_ip}, --private-key ${var.ssh_key_private} --user ec2-user docker-docker-new-user.yaml "
